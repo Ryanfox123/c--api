@@ -30,3 +30,4 @@
 /Users/ryan/projects/capi/api/obj/Debug/net9.0/api.pdb
 /Users/ryan/projects/capi/api/obj/Debug/net9.0/api.genruntimeconfig.cache
 /Users/ryan/projects/capi/api/obj/Debug/net9.0/ref/api.dll
+/Users/ryan/projects/capi/api/obj/Debug/net9.0/api.sourcelink.json
