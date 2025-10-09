@@ -22,7 +22,7 @@ namespace api.Mappers
                 MarketCap = stockModel.MarketCap
             };
         }
-        public static Stock ToStockFromCreateDTO(this CreateStockDto stockDto)
+        public static Stock ToStockFromCreateDTO(this CreateStockRequestDto stockDto)
         {
             return new Stock
             {
