@@ -8,7 +8,7 @@ services:
       SA_PASSWORD: "YourStrong!Passw0rd"
       ACCEPT_EULA: "Y"
     ports:
-      - "1433:1433"
+      - "1432:1433"
     volumes:
       - sqlserver-data:/var/opt/mssql
 
@@ -16,11 +16,12 @@ services:
     build: .
     container_name: csharp-api
     ports:
-      - "5000:5000"
+      - "5050:5050"
     depends_on:
       - sqlserver
     environment:
-      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=MyDb;User Id=sa;Password=YourStrong!Passw0rd;"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=MyDb;User Id=sa;Password=YourStrong!Passw0rd;Encrypt=False;TrustServerCertificate=True;"
+      ASPNETCORE_ENVIRONMENT: Development
 
 volumes:
   sqlserver-data:

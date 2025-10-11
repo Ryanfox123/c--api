@@ -18,7 +18,7 @@ WORKDIR /api
 COPY --from=build /api/out .
 
 # Expose the port your API runs on
-EXPOSE 5000
+EXPOSE 5050
 
 # Start the application
-ENTRYPOINT ["dotnet", "YourProjectName.dll"]
+ENTRYPOINT ["dotnet", "api.dll"]
