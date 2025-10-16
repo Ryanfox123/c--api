@@ -23,7 +23,7 @@ namespace api.Mappers
                 Comments = stockModel.Comments.Select(c => c.ToCommentDto()).ToList()
             };
         }
-        public static Stock ToStockFromCreateDTO(this CreateStockRequestDto stockDto)
+        public static Stock ToStockFromCreateDTO(this CreateStockDto stockDto)
         {
             return new Stock
             {
