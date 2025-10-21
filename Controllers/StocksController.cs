@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Controllers.Interfaces;
 using api.Data;
 using api.Dtos.Stocks;
+using api.Helpers;
 using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -25,11 +26,11 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<StocksDto>>> GetAll()
+        public async Task<ActionResult<List<StocksDto>>> GetAll([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var stocks = await _stockRepo.GetAllAsync();
+            var stocks = await _stockRepo.GetAllAsync(query);
             
             var stockDto = stocks.Select(s => s.ToStockDto());
 
@@ -54,7 +55,7 @@ namespace api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var stockModel = stockDto.ToStockFromCreateDTO();
-            
+
             await _stockRepo.CreateAsync(stockModel);
 
             return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
