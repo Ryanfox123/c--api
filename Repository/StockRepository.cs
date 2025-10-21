@@ -58,6 +58,15 @@ namespace api.Repository
                 {
                     stocks = query.isDescending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(s => s.Symbol);
                 }
+                if (query.SortBy.Equals("companyname", StringComparison.OrdinalIgnoreCase))
+                {
+                    stocks = query.isDescending ? stocks.OrderByDescending(s => s.CompanyName) : stocks.OrderBy(s => s.CompanyName);
+                }
+                if (query.SortBy.Equals("industry", StringComparison.OrdinalIgnoreCase))
+                {
+                    stocks = query.isDescending ? stocks.OrderByDescending(s => s.Industry) : stocks.OrderBy(s => s.Industry);
+                }
+                
             }
 
             return await stocks.ToListAsync();
