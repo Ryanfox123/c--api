@@ -32,7 +32,7 @@ namespace api.Repository
 
             if (commentModel == null) return null;
 
-            _context.Remove(commentModel);
+            _context.Comments.Remove(commentModel);
             await _context.SaveChangesAsync();
 
             return commentModel;
