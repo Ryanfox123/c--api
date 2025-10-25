@@ -9,9 +9,11 @@ namespace api.Models
     [Table("Portfolios")]
     public class Portfolio
     {
-        public string AppUserId { get; set; }
+        public required string AppUserId { get; set; }
+
+        [ForeignKey("Stock")]     
         public int stockId { get; set; }
-        public AppUser AppUser { get; set; }
-        public Stock Stock { get; set; }
+        public required AppUser AppUser { get; set; }
+        public required Stock Stock { get; set; }
     }
 }
