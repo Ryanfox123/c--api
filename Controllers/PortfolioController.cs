@@ -32,7 +32,7 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserPortfolio()
         {
-            var username = User.GetUsername();
+            var username = User.GetUsernameFromClaim();
 
             var appUser = await _UserManager.FindByNameAsync(username);
 
@@ -42,5 +42,6 @@ namespace api.Controllers
 
             return Ok(userPortfolio);
         }
+        
     }
 }
