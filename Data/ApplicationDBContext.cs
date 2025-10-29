@@ -25,7 +25,7 @@ namespace api.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Portfolio>(x => x.HasKey(p => new { p.AppUserId, p.stockId }));
+            builder.Entity<Portfolio>(x => x.HasKey(p => new { p.AppUserId, p.StockId }));
 
             builder.Entity<Portfolio>()
             .HasOne(u => u.AppUser)
@@ -35,7 +35,7 @@ namespace api.Data
             builder.Entity<Portfolio>()
             .HasOne(u => u.Stock)
             .WithMany(u => u.Portfolios)
-            .HasForeignKey(p => p.stockId);
+            .HasForeignKey(p => p.StockId);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {
