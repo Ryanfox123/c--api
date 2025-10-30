@@ -48,18 +48,14 @@ namespace api.Repository
             return await _context.Comments.Include(a => a.AppUser).FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<Comment?> UpdateAsync(Comment commentModel, int id)
+        public async Task<Comment?> UpdateAsync(Comment commentModel, int id, Comment originalComment)
         {
-            var existingComment = await _context.Comments.FindAsync(id);
-
-            if (existingComment == null) return null;
-
-            existingComment.Content = commentModel.Content;
-            existingComment.Title = commentModel.Title;
+            originalComment.Content = commentModel.Content;
+            originalComment.Title = commentModel.Title;
 
             await _context.SaveChangesAsync();
 
-            return existingComment;
+            return originalComment;
 
         }
     }

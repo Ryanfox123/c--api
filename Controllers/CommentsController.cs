@@ -10,6 +10,7 @@ using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using api.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -54,6 +55,7 @@ namespace api.Controllers
             return Ok(comment.ToCommentDto());
         }
         [HttpPost("{stockId:int}")]
+        [Authorize]
         public async Task<ActionResult<CommentDto>> Create([FromRoute] int stockId, CreateCommentDto commentDto)
         {
 
@@ -72,18 +74,25 @@ namespace api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
         }
         [HttpPut("{id:int}")]
+        [Authorize]
         public async Task<ActionResult<CommentDto>> Update([FromRoute] int id, [FromBody] UpdateCommentDto updateCommentDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var commentModel = await _commentRepo.UpdateAsync(updateCommentDto.ToCommentFromUpdateDto(), id);
+            var originalComment = await _commentRepo.GetByIdAsync(id);
+            if (originalComment == null) return BadRequest("Comment not found");
 
-            if (commentModel == null) return NotFound();
+            var username = User.GetUsernameFromClaim();
+            if (username != originalComment.AppUser.UserName) return Unauthorized();
+
+            var commentModel = await _commentRepo.UpdateAsync(updateCommentDto.ToCommentFromUpdateDto(), id, originalComment);
+            if (commentModel == null) return StatusCode(500, "Failed to update comment.");
 
             return Ok(commentModel.ToCommentDto());
         }
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<ActionResult> Delete([FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
