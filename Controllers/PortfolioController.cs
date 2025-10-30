@@ -16,14 +16,14 @@ namespace api.Controllers
     [ApiController]
     public class PortfolioController : ControllerBase
     {
-        private readonly UserManager<AppUser> _UserManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IStockRepository _stockRepo;
         private readonly IPortfolioRepository _portfolioRepo;
         
         public PortfolioController(UserManager<AppUser> userManager,
         IStockRepository stockRepo, IPortfolioRepository portfolioRepo)
         {
-            _UserManager = userManager;
+            _userManager = userManager;
             _stockRepo = stockRepo;
             _portfolioRepo = portfolioRepo;
         }
@@ -33,7 +33,7 @@ namespace api.Controllers
         public async Task<IActionResult> GetUserPortfolio()
         {
             var username = User.GetUsernameFromClaim();
-            var appUser = await _UserManager.FindByNameAsync(username);
+            var appUser = await _userManager.FindByNameAsync(username);
 
             if (appUser == null) return Unauthorized("User not found or invalid token.");
 
@@ -47,7 +47,7 @@ namespace api.Controllers
         public async Task<IActionResult> AddPortfolio(string symbol)
         {
             var username = User.GetUsernameFromClaim();
-            var appUser = await _UserManager.FindByNameAsync(username);
+            var appUser = await _userManager.FindByNameAsync(username);
             var stock = await _stockRepo.GetBySymbolAsync(symbol);
 
             if (stock == null) return BadRequest("Stock not found");
@@ -78,7 +78,7 @@ namespace api.Controllers
         public async Task<IActionResult> DeletePortfolio(string symbol)
         {
             var username = User.GetUsernameFromClaim();
-            var appUser = await _UserManager.FindByNameAsync(username);
+            var appUser = await _userManager.FindByNameAsync(username);
             var userPortfolio = await _portfolioRepo.GetUserPortfolio(appUser);
 
             var filteredStock = userPortfolio.Where(s => s.Symbol.ToLower() == symbol.ToLower());
