@@ -97,7 +97,13 @@ namespace api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var commentModel = await _commentRepo.DeleteAsync(id);
+            var originalComment = await _commentRepo.GetByIdAsync(id);
+            if (originalComment == null) return BadRequest("Comment not found");
+
+            var username = User.GetUsernameFromClaim();
+            if (username != originalComment.AppUser.UserName && !User.IsInRole("Admin")) return Forbid();
+
+            var commentModel = await _commentRepo.DeleteAsync(id, originalComment);
 
             if (commentModel == null) return NotFound();
 

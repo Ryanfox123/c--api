@@ -45,7 +45,7 @@ namespace api.Controllers
                 {
                     UserName = user.UserName,
                     Email = user.Email,
-                    Token = _tokenService.createToken(user)
+                    Token = await _tokenService.createToken(user)
                 }
             );
         }
@@ -76,7 +76,7 @@ namespace api.Controllers
                             {
                                 UserName = appUser.UserName,
                                 Email = appUser.Email,
-                                Token = _tokenService.createToken(appUser)
+                                Token = await _tokenService.createToken(appUser)
                             }
                         );
                     }

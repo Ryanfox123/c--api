@@ -17,6 +17,6 @@ namespace api.Interfaces
 
         Task<Comment?> UpdateAsync(Comment commentModel, int id, Comment originalComment);
 
-        Task<Comment?> DeleteAsync(int id);
+        Task<Comment?> DeleteAsync(int id, Comment originalComment);
     }
 }
