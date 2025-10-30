@@ -21,3 +21,5 @@ _ReSharper*/
 *.bak
 *.swp
 publish/
+
+.fake
