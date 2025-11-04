@@ -105,22 +105,20 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();      
-    app.UseSwaggerUI();     
-}
-
-if (app.Environment.IsDevelopment())
-{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
     app.MapOpenApi();
+}
+else
+{
+    app.UseExceptionHandler("/error");
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 
 using (var scope = app.Services.CreateScope())
 {
