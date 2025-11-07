@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using api.Service;
+using api.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,6 +102,13 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
+builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
+
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -109,6 +117,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.MapOpenApi();
+    builder.Configuration.AddUserSecrets<Program>();
 }
 else
 {
@@ -125,6 +134,5 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
     db.Database.Migrate();
 }
-
 
 app.Run();
